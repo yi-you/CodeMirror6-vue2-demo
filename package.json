@@ -1,0 +1,67 @@
+{
+  "name": "codemirror6-vue2",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@codemirror/autocomplete": "^6.3.0",
+    "@codemirror/commands": "^6.1.1",
+    "@codemirror/lang-json": "^6.0.0",
+    "@codemirror/lang-sql": "^6.3.0",
+    "@codemirror/language": "^6.2.1",
+    "@codemirror/search": "^6.2.1",
+    "@codemirror/state": "^6.1.2",
+    "@codemirror/view": "^6.3.0",
+    "@lezer/highlight": "^1.1.1",
+    "@uiw/codemirror-theme-github": "^4.12.3",
+    "@uiw/codemirror-themes": "^4.12.3",
+    "babel-eslint": "^10.1.0",
+    "codemirror": "6.0.1",
+    "core-js": "^3.8.3",
+    "vue": "^2.6.14"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^9.5.1"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">= 6.0.0"
+  },
+  "keywords": [
+    "vue",
+    "vue2",
+    "codemirror",
+    "codemirror6",
+    "@codemirror/language",
+    "@codemirror/lang-sql",
+    "@codemirror/lang-json"
+  ],
+  "license": "MIT",
+  "lint-staged": {
+    "src/**/*.{js,vue}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}
