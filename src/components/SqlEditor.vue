@@ -6,18 +6,22 @@
       </option>
     </select>
     <span>Selected: {{ langType }}</span>
-    <div ref="editor" class="sql-editor" :style="editorStyle" />
+    <div ref="editor" class="sql-editor" :style="editorStyle"/>
   </div>
 </template>
 
 <script>
 import { getLanguage, sqlDialectMap, themesMap } from './editor-helper'
-import { EditorView } from '@codemirror/view'
+import { EditorView, placeholder } from '@codemirror/view'
 import { Compartment, EditorState } from '@codemirror/state'
 import { basicSetup } from 'codemirror'
 
 export default {
   name: 'SqlEditor',
+  model: {
+    prop: 'doc',
+    event: 'input'
+  },
   props: {
     doc: { type: String, default: '' },
     themeName: { type: String, default: 'light' },
@@ -29,17 +33,26 @@ export default {
       })
     },
     editorStyle: {
-      type: Object, default: () => ({ '--width': '100%', '--height': '200px' })
-    }
+      type: Object, default: () => ({ '--width': '100%', '--height': '60px' })
+    },
+    placeholder: { type: String, default: '' }
   },
   data() {
     return {
-      editor: null,
-      useIndent: true,
       languageConf: new Compartment(),
       view: undefined,
-      langType: 'hivesql',
+      langType: 'impalasql',
       sqlDialectMap: sqlDialectMap
+    }
+  },
+  watch: {
+    doc: {
+      handler(newValue, oldValue) {
+        const editorDoc = this.view.state.doc.toString()
+        if (editorDoc !== newValue) {
+          this.updateDoc(this.doc)
+        }
+      }
     }
   },
   mounted() {
@@ -71,6 +84,9 @@ export default {
     },
     createState(value, language, themeName) {
       const _extensions = [language, themesMap[themeName], EditorView.lineWrapping, ...basicSetup]
+      if (this.placeholder) {
+        _extensions.push(placeholder(this.placeholder))
+      }
       const listener = EditorView.updateListener.of((viewUpdate) => {
         // https://discuss.codemirror.net/t/codemirror-6-proper-way-to-listen-for-changes/2395/11
         if (viewUpdate.docChanged) {
@@ -88,7 +104,13 @@ export default {
       })
     },
     updateDoc(newDoc) {
-      const transaction = this.view.state.update({ changes: { from: 0, to: this.view.state.doc.length, insert: newDoc }})
+      const transaction = this.view.state.update({
+        changes: {
+          from: 0,
+          to: this.view.state.doc.length,
+          insert: newDoc
+        }
+      })
       this.view.dispatch(transaction)
     }
   }
@@ -96,7 +118,7 @@ export default {
 </script>
 <style scoped>
 /deep/ .sql-editor .cm-editor {
-  border: solid;
+  border: 1px solid #dfe4ed;
   border-radius: .2rem;
   overflow: hidden;
   height: var(--height);
@@ -106,8 +128,11 @@ export default {
   min-width: 100px;
   max-width: 100%;
   resize: both;
-  font-size: 14px;
+  font-size: 15px;
   font-variant-numeric: tabular-nums;
+}
+
+/deep/ .sql-editor .cm-scroller {
   font-family: 'Consolas, "Courier New", monospace'
 }
 
