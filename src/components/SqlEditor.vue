@@ -6,7 +6,7 @@
       </option>
     </select>
     <span>Selected: {{ langType }}</span>
-    <div ref="editor" class="sql-editor" :style="editorStyle"/>
+    <div ref="editor" class="sql-editor" :style="editorStyle" />
   </div>
 </template>
 
